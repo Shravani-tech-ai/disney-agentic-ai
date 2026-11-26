@@ -1,29 +1,112 @@
 import { LightningElement, track } from 'lwc';
-import getAgents from '@salesforce/apex/DisneyAgentController.getAgents';
-import chat from '@salesforce/apex/DisneyAgentController.chat';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+
+import chat from
+    '@salesforce/apex/DisneyAgentController.chat';
+
+import getTrace from
+    '@salesforce/apex/DisneyAgentController.getTrace';
+
+import getMetrics from
+    '@salesforce/apex/DisneyAgentController.getMetrics';
+
 
 export default class DisneyAssistant extends LightningElement {
-    @track messages = [{ id: 'welcome', label: 'Disney Assistant', text: 'Hello! I can help with product knowledge, Friends & Family duplicates, reservation claims, dining availability and Lightning Lane availability.', cssClass: 'message assistant-message' }];
-    @track agents = [];
-    draft = ''; loading = false; sessionId;
-    connectedCallback() {
-        getAgents().then((rows) => { this.agents = rows || []; }).catch((error) => this.toast('Configuration error', this.errorMessage(error), 'error'));
+
+    message = '';
+    answer = '';
+    traceId = '';
+    latencyMs = 0;
+
+    activeTab = 'chat';
+    isLoading = false;
+
+    @track trace;
+    @track metrics;
+
+    selectedAgents = [];
+
+    handleMessageChange(event) {
+        this.message = event.target.value;
     }
-    get sendDisabled() { return this.loading || !this.draft.trim(); }
-    handleDraft(event) { this.draft = event.target.value; }
-    handleKeydown(event) { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); this.sendMessage(); } }
-    async sendMessage() {
-        const message = this.draft.trim(); if (!message || this.loading) return;
-        this.messages = [...this.messages, { id: `u-${Date.now()}`, label: 'You', text: message, cssClass: 'message user-message' }];
-        this.draft = ''; this.loading = true;
+
+    handleTraceIdChange(event) {
+        this.traceId = event.target.value;
+    }
+
+    handleTabChange(event) {
+        this.activeTab = event.target.value;
+    }
+
+    async handleSend() {
+
+        if (!this.message || this.isLoading) {
+            return;
+        }
+
+        this.isLoading = true;
+
         try {
-            const result = await chat({ message, sessionId: this.sessionId });
-            this.sessionId = result.session_id || this.sessionId;
-            this.messages = [...this.messages, { id: `a-${Date.now()}`, label: 'Disney Assistant', text: result.answer || 'The assistant returned no text.', intent: result.intent, mock: result.mock === true, cssClass: 'message assistant-message' }];
-        } catch (error) { this.toast('Unable to get a response', this.errorMessage(error), 'error'); }
-        finally { this.loading = false; }
+
+            const result = await chat({
+                message: this.message,
+                sessionId: 'salesforce-session'
+            });
+
+            this.answer = result.answer;
+            this.traceId = result.trace_id;
+            this.latencyMs = result.latency_ms;
+
+            await this.loadTrace();
+
+        } catch (error) {
+
+            this.answer =
+                error?.body?.message || error.message;
+
+        } finally {
+
+            this.isLoading = false;
+
+        }
     }
-    errorMessage(error) { return error?.body?.message || error?.message || 'Unexpected error'; }
-    toast(title, message, variant) { this.dispatchEvent(new ShowToastEvent({ title, message, variant })); }
+
+    async loadTrace() {
+
+        if (!this.traceId) {
+            return;
+        }
+
+        try {
+
+            const result = await getTrace({
+                traceId: this.traceId
+            });
+
+            this.trace = JSON.parse(result);
+
+            this.selectedAgents =
+                this.trace.selected_agents || [];
+
+        } catch (error) {
+
+            console.error('Trace error', error);
+
+        }
+    }
+
+    async loadMetrics() {
+
+        try {
+
+            const result = await getMetrics();
+
+            this.metrics = JSON.parse(result);
+
+        } catch (error) {
+
+            console.error('Metrics error', error);
+
+        }
+    }
+
 }

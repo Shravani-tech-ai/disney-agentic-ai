@@ -1,26 +1,151 @@
 <template>
-    <lightning-card title="Disney Assistant" icon-name="utility:chat">
-        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
-            <template if:true={agents.length}>
-                <div class="agent-strip slds-m-bottom_medium"><span class="slds-text-title_bold">Available specialists:</span>
-                    <template for:each={agents} for:item="agent"><span key={agent.name} class="agent-pill">{agent.name}</span></template>
+    <lightning-card title="Disney AI Observability">
+
+        <lightning-tabset
+            active-tab-value={activeTab}
+            onactive={handleTabChange}>
+
+            <lightning-tab label="Chat" value="chat">
+                <div class="panel">
+
+                    <lightning-textarea
+                        label="Ask Disney Assistant"
+                        value={message}
+                        onchange={handleMessageChange}>
+                    </lightning-textarea>
+
+                    <lightning-button
+                        label="Send"
+                        variant="brand"
+                        onclick={handleSend}
+                        disabled={isLoading}>
+                    </lightning-button>
+
+                    <template if:true={answer}>
+                        <div class="answer">
+                            <h3>Assistant Response</h3>
+                            <p>{answer}</p>
+
+                            <p>Trace ID: {traceId}</p>
+                            <p>Latency: {latencyMs} ms</p>
+                        </div>
+                    </template>
+
                 </div>
-            </template>
-            <div class="chat-window" role="log" aria-live="polite">
-                <template for:each={messages} for:item="item">
-                    <div key={item.id} class={item.cssClass}>
-                        <div class="bubble-label">{item.label}</div><div class="bubble-text">{item.text}</div>
-                        <template if:true={item.intent}><div class="message-meta">Intent: {item.intent}</div></template>
-                        <template if:true={item.mock}><div class="mock-note">Demo data — not live Disney availability</div></template>
-                    </div>
-                </template>
-                <template if:true={loading}><div class="loading-line"><lightning-spinner size="small" alternative-text="Thinking"></lightning-spinner><span>Assistant is thinking…</span></div></template>
-            </div>
-            <div class="composer slds-m-top_medium">
-                <lightning-textarea label="Ask the Disney assistant" variant="label-hidden" placeholder="Ask about products, guest profiles, reservations, dining or Lightning Lane…" value={draft} onchange={handleDraft} onkeydown={handleKeydown} max-length="4000"></lightning-textarea>
-                <lightning-button variant="brand" label="Send" onclick={sendMessage} disabled={sendDisabled} class="send-button"></lightning-button>
-            </div>
-            <p class="slds-text-color_weak slds-text-body_small slds-m-top_x-small">This demo uses simulated Disney data. It does not access or change real Disney accounts or reservations.</p>
-        </div>
+            </lightning-tab>
+
+            <lightning-tab label="Trace" value="trace">
+
+                <div class="panel">
+
+                    <lightning-input
+                        label="Trace ID"
+                        value={traceId}
+                        onchange={handleTraceIdChange}>
+                    </lightning-input>
+
+                    <lightning-button
+                        label="Load Trace"
+                        onclick={loadTrace}>
+                    </lightning-button>
+
+                    <template if:true={trace}>
+                        <h3>Trace Details</h3>
+
+                        <p>Status: {trace.status}</p>
+                        <p>Latency: {trace.latency_ms} ms</p>
+
+                        <template
+                            for:each={trace.events}
+                            for:item="event">
+
+                            <div key={event.event_id}
+                                 class="event-card">
+
+                                <p>{event.event_type}</p>
+                                <strong>{event.name}</strong>
+                                <p>{event.duration_ms} ms</p>
+
+                            </div>
+
+                        </template>
+                    </template>
+
+                </div>
+
+            </lightning-tab>
+
+            <lightning-tab label="Routing" value="routing">
+
+                <div class="panel">
+
+                    <h3>Executed Agents</h3>
+
+                    <template
+                        for:each={selectedAgents}
+                        for:item="agent">
+
+                        <div key={agent} class="agent-card">
+                            <lightning-icon
+                                icon-name="utility:check"
+                                size="small">
+                            </lightning-icon>
+                            {agent}
+                        </div>
+
+                    </template>
+
+                </div>
+
+            </lightning-tab>
+
+            <lightning-tab label="Metrics" value="metrics">
+
+                <div class="panel">
+
+                    <lightning-button
+                        label="Refresh Metrics"
+                        onclick={loadMetrics}>
+                    </lightning-button>
+
+                    <template if:true={metrics}>
+
+                        <div class="metric-grid">
+
+                            <div class="metric-card">
+                                <h2>{metrics.total_traces}</h2>
+                                <p>Total Traces</p>
+                            </div>
+
+                            <div class="metric-card">
+                                <h2>{metrics.average_latency_ms}</h2>
+                                <p>Average Latency (ms)</p>
+                            </div>
+
+                            <div class="metric-card">
+                                <h2>{metrics.p95_latency_ms}</h2>
+                                <p>P95 Latency (ms)</p>
+                            </div>
+
+                            <div class="metric-card">
+                                <h2>{metrics.success_rate}%</h2>
+                                <p>Success Rate</p>
+                            </div>
+
+                            <div class="metric-card">
+                                <h2>{metrics.total_tool_calls}</h2>
+                                <p>Tool Calls</p>
+                            </div>
+
+                        </div>
+
+                    </template>
+
+                </div>
+
+            </lightning-tab>
+
+        </lightning-tabset>
+
     </lightning-card>
 </template>

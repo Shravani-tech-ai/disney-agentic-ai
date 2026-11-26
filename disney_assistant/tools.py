@@ -4,18 +4,19 @@
 from typing import Any
 
 from .provider_api_client import get, post
+from disney_assistant.observability import trace_tool
 
-
+@trace_tool
 def search_products(keyword: str) -> dict[str, Any]:
     """Search Disney products by keyword using the Products REST API."""
     return get("/mock-api/products", params={"keyword": keyword})
 
-
+@trace_tool
 def search_product_knowledge(query: str) -> dict[str, Any]:
     """Search Disney policies, guides and informational articles."""
     return get("/mock-api/knowledge/search", params={"query": query})
 
-
+@trace_tool
 def find_friends_family_duplicates(
     guest_id: str = "GUEST-1001",
 ) -> dict[str, Any]:
@@ -25,7 +26,7 @@ def find_friends_family_duplicates(
         {"guest_id": guest_id},
     )
 
-
+@trace_tool
 def check_reservation_claim_status(
     reservation_id: str = "RES-1001",
 ) -> dict[str, Any]:
@@ -34,7 +35,7 @@ def check_reservation_claim_status(
         f"/mock-api/reservations/{reservation_id}/claim-status"
     )
 
-
+@trace_tool
 def search_dining_availability(
     restaurant: str,
     requested_date: str,
@@ -52,7 +53,7 @@ def search_dining_availability(
         },
     )
 
-
+@trace_tool
 def search_lightning_lane_availability(
     park: str,
     attraction: str,
