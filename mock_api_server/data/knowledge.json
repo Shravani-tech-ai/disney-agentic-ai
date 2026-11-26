@@ -1,0 +1,46 @@
+[
+  {
+    "article_id": "KB-001",
+    "title": "Park Hopper overview",
+    "keywords": [
+      "park hopper",
+      "visit multiple parks",
+      "hopper"
+    ],
+    "content": "Park Hopper is represented here as a demo ticket add-on that may allow visits to more than one eligible park in a day. Actual eligibility and entry rules must be checked with the official provider.",
+    "category": "Tickets"
+  },
+  {
+    "article_id": "KB-002",
+    "title": "Dining cancellation guidance",
+    "keywords": [
+      "dining cancellation",
+      "cancel restaurant",
+      "no show"
+    ],
+    "content": "This simulated knowledge article says cancellation and no-show rules can vary by restaurant and reservation. Review the terms attached to the specific reservation.",
+    "category": "Policy"
+  },
+  {
+    "article_id": "KB-003",
+    "title": "Lightning Lane overview",
+    "keywords": [
+      "lightning lane",
+      "multi pass",
+      "single pass"
+    ],
+    "content": "This simulated article explains Lightning Lane as an optional attraction-access offering. Attraction availability, booking windows and terms are not guaranteed by this demo.",
+    "category": "Attraction Access"
+  },
+  {
+    "article_id": "KB-004",
+    "title": "Theme park tickets",
+    "keywords": [
+      "ticket",
+      "admission",
+      "theme park"
+    ],
+    "content": "Demo ticket products can vary by date, duration, park and add-ons. Prices in this mock environment are fictional.",
+    "category": "Tickets"
+  }
+]

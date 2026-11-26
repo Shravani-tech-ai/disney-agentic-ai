@@ -1,0 +1,58 @@
+[
+  {
+    "guest_id": "GUEST-1001",
+    "name": "Aarav Sharma",
+    "email": "aarav@example.test",
+    "friends_family": [
+      {
+        "profile_id": "P-101",
+        "name": "Aarav Sharma",
+        "email": "aarav@example.test",
+        "relationship": "Self"
+      },
+      {
+        "profile_id": "P-102",
+        "name": "Mira Sharma",
+        "email": "mira@example.test",
+        "relationship": "Family"
+      },
+      {
+        "profile_id": "P-103",
+        "name": "Aarav Sharma",
+        "email": "aarav@example.test",
+        "relationship": "Friend"
+      },
+      {
+        "profile_id": "P-104",
+        "name": "Riya Patel",
+        "email": "riya@example.test",
+        "relationship": "Friend"
+      },
+      {
+        "profile_id": "P-105",
+        "name": "Riya Patil",
+        "email": "riya.p@example.test",
+        "relationship": "Friend"
+      }
+    ]
+  },
+  {
+    "guest_id": "GUEST-1002",
+    "name": "Mira Sharma",
+    "email": "mira@example.test",
+    "friends_family": [
+      {
+        "profile_id": "P-201",
+        "name": "Mira Sharma",
+        "email": "mira@example.test",
+        "relationship": "Self"
+      },
+      {
+        "profile_id": "P-202",
+        "name": "Aarav Sharma",
+        "email": "aarav@example.test",
+        "relationship": "Family"
+      }
+    ]
+  }
+]

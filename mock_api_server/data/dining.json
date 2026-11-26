@@ -1,0 +1,47 @@
+[
+  {
+    "slot_id": "DIN-001",
+    "restaurant": "Cinderella's Royal Table",
+    "date": "2026-12-15",
+    "party_size_min": 1,
+    "party_size_max": 4,
+    "time": "17:30",
+    "status": "AVAILABLE"
+  },
+  {
+    "slot_id": "DIN-002",
+    "restaurant": "Cinderella's Royal Table",
+    "date": "2026-12-15",
+    "party_size_min": 1,
+    "party_size_max": 4,
+    "time": "19:00",
+    "status": "AVAILABLE"
+  },
+  {
+    "slot_id": "DIN-003",
+    "restaurant": "Cinderella's Royal Table",
+    "date": "2026-12-15",
+    "party_size_min": 1,
+    "party_size_max": 2,
+    "time": "20:15",
+    "status": "AVAILABLE"
+  },
+  {
+    "slot_id": "DIN-004",
+    "restaurant": "Be Our Guest",
+    "date": "2026-12-15",
+    "party_size_min": 1,
+    "party_size_max": 6,
+    "time": "18:15",
+    "status": "AVAILABLE"
+  },
+  {
+    "slot_id": "DIN-005",
+    "restaurant": "Space 220 Restaurant",
+    "date": "2026-12-16",
+    "party_size_min": 1,
+    "party_size_max": 4,
+    "time": "18:30",
+    "status": "AVAILABLE"
+  }
+]

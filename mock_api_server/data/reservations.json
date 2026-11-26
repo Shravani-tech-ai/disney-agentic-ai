@@ -1,0 +1,48 @@
+[
+  {
+    "reservation_id": "RES-1001",
+    "guest_id": "GUEST-1001",
+    "reservation_type": "Theme Park Package",
+    "date": "2026-12-15",
+    "guests": [
+      {
+        "guest_id": "GUEST-1001",
+        "name": "Aarav Sharma",
+        "claim_status": "CLAIMED"
+      },
+      {
+        "guest_id": "GUEST-1002",
+        "name": "Mira Sharma",
+        "claim_status": "CLAIMED"
+      },
+      {
+        "guest_id": "GUEST-1003",
+        "name": "Riya Patel",
+        "claim_status": "PENDING"
+      },
+      {
+        "guest_id": "GUEST-1004",
+        "name": "Kabir Sharma",
+        "claim_status": "NOT_LINKED"
+      }
+    ]
+  },
+  {
+    "reservation_id": "RES-1002",
+    "guest_id": "GUEST-1001",
+    "reservation_type": "Dining Package",
+    "date": "2026-12-16",
+    "guests": [
+      {
+        "guest_id": "GUEST-1001",
+        "name": "Aarav Sharma",
+        "claim_status": "CLAIMED"
+      },
+      {
+        "guest_id": "GUEST-1002",
+        "name": "Mira Sharma",
+        "claim_status": "PENDING"
+      }
+    ]
+  }
+]

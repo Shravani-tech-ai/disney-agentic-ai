@@ -1,0 +1,56 @@
+[
+  {
+    "product_id": "PROD-001",
+    "name": "MagicBand+",
+    "category": "Park Accessories",
+    "description": "A wearable accessory used for selected theme park interactions in this fictional demo.",
+    "price": 34.99,
+    "currency": "USD",
+    "availability": "AVAILABLE",
+    "tags": [
+      "magicband",
+      "accessory",
+      "park"
+    ]
+  },
+  {
+    "product_id": "PROD-002",
+    "name": "Theme Park Ticket",
+    "category": "Tickets",
+    "description": "Demo multi-day theme park admission product. Actual terms vary.",
+    "price": 109.0,
+    "currency": "USD",
+    "availability": "AVAILABLE",
+    "tags": [
+      "ticket",
+      "admission"
+    ]
+  },
+  {
+    "product_id": "PROD-003",
+    "name": "Lightning Lane Multi Pass",
+    "category": "Attraction Access",
+    "description": "A demo description of an optional attraction-access product. Check current official terms in real use.",
+    "price": 25.0,
+    "currency": "USD",
+    "availability": "INFO_ONLY",
+    "tags": [
+      "lightning lane",
+      "multi pass",
+      "attraction"
+    ]
+  },
+  {
+    "product_id": "PROD-004",
+    "name": "Park Hopper Option",
+    "category": "Tickets",
+    "description": "A demo ticket add-on concept that may allow park hopping subject to ticket terms.",
+    "price": 65.0,
+    "currency": "USD",
+    "availability": "AVAILABLE",
+    "tags": [
+      "park hopper",
+      "ticket"
+    ]
+  }
+]

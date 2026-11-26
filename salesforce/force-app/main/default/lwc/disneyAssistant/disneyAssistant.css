@@ -1,0 +1,13 @@
+.chat-window { min-height: 260px; max-height: 440px; overflow-y: auto; padding: 12px; background: #f7f9fc; border: 1px solid #d8dde6; border-radius: 8px; }
+.message { max-width: 88%; padding: 10px 12px; margin: 8px 0; border-radius: 8px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.assistant-message { background: #fff; border: 1px solid #d8dde6; margin-right: auto; }
+.user-message { background: #eaf2fb; border: 1px solid #b8cce5; margin-left: auto; }
+.bubble-label { font-size: .72rem; font-weight: 700; color: #334155; margin-bottom: 4px; }
+.bubble-text { color: #172b4d; }
+.message-meta,.mock-note { font-size: .72rem; margin-top: 7px; color: #52647a; }
+.mock-note { color: #8a4b08; font-weight: 600; }
+.composer { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end; }
+.send-button { padding-bottom: 2px; }
+.agent-strip { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.agent-pill { font-size: .68rem; background: #eef2f7; border-radius: 12px; padding: 3px 8px; color: #334155; }
+.loading-line { display: flex; align-items: center; gap: 10px; min-height: 34px; color: #52647a; }

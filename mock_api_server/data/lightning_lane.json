@@ -1,0 +1,34 @@
+[
+  {
+    "slot_id": "LL-001",
+    "park": "Magic Kingdom",
+    "attraction": "Space Mountain",
+    "date": "2026-12-15",
+    "return_window": "10:30-11:30",
+    "status": "AVAILABLE"
+  },
+  {
+    "slot_id": "LL-002",
+    "park": "Magic Kingdom",
+    "attraction": "Space Mountain",
+    "date": "2026-12-15",
+    "return_window": "14:00-15:00",
+    "status": "AVAILABLE"
+  },
+  {
+    "slot_id": "LL-003",
+    "park": "Animal Kingdom",
+    "attraction": "Avatar Flight of Passage",
+    "date": "2026-12-15",
+    "return_window": "13:15-14:15",
+    "status": "AVAILABLE"
+  },
+  {
+    "slot_id": "LL-004",
+    "park": "Hollywood Studios",
+    "attraction": "Slinky Dog Dash",
+    "date": "2026-12-15",
+    "return_window": "16:00-17:00",
+    "status": "AVAILABLE"
+  }
+]
