@@ -1,3 +1,4 @@
+
 <template>
     <lightning-card title="Disney AI Observability">
 
@@ -5,38 +6,126 @@
             active-tab-value={activeTab}
             onactive={handleTabChange}>
 
+            <!-- CHAT TAB -->
             <lightning-tab label="Chat" value="chat">
-                <div class="panel">
 
-                    <lightning-textarea
-                        label="Ask Disney Assistant"
-                        value={message}
-                        onchange={handleMessageChange}>
-                    </lightning-textarea>
+                <div class="panel chat-panel">
 
-                    <lightning-button
-                        label="Send"
-                        variant="brand"
-                        onclick={handleSend}
-                        disabled={isLoading}>
-                    </lightning-button>
-
-                    <template if:true={answer}>
-                        <div class="answer">
-                            <h3>Assistant Response</h3>
-                            <p>{answer}</p>
-
-                            <p>Trace ID: {traceId}</p>
-                            <p>Latency: {latencyMs} ms</p>
+                    <div class="chat-header">
+                        <div>
+                            <h2>Disney AI Assistant</h2>
+                            <p>Ask questions about Disney services and experiences.</p>
                         </div>
-                    </template>
+                    </div>
+
+                    <!-- CONVERSATION HISTORY -->
+                    <div class="chat-window" lwc:ref="chatWindow">
+
+                        <template if:false={hasMessages}>
+                            <div class="empty-state">
+                                <lightning-icon
+                                    icon-name="utility:chat"
+                                    size="large">
+                                </lightning-icon>
+
+                                <h3>Welcome to Disney AI Assistant!</h3>
+                                <p>
+                                    Ask me about products, Friends &amp; Family,
+                                    reservations, dining, and Lightning Lane.
+                                </p>
+                            </div>
+                        </template>
+
+                        <template
+                            for:each={messages}
+                            for:item="item">
+
+                            <div key={item.id} class={item.cssClass}>
+
+                                <div class="bubble-label">
+                                    {item.sender}
+                                </div>
+
+                                <div class="bubble-text">
+                                    <lightning-formatted-text
+                                        value={item.text}>
+                                    </lightning-formatted-text>
+                                </div>
+
+                                <template if:true={item.agentInfo}>
+                                    <div class="message-meta">
+                                        {item.agentInfo}
+                                    </div>
+                                </template>
+
+                                <template if:true={item.meta}>
+                                    <div class="message-meta">
+                                        {item.meta}
+                                    </div>
+                                </template>
+
+                                <template if:true={item.mockNote}>
+                                    <div class="mock-note">
+                                        Demo response generated using simulated data.
+                                    </div>
+                                </template>
+
+                            </div>
+
+                        </template>
+
+                        <!-- LOADING INDICATOR -->
+                        <template if:true={isLoading}>
+                            <div class="loading-line">
+                                <lightning-spinner
+                                    alternative-text="Disney Assistant is thinking"
+                                    size="small">
+                                </lightning-spinner>
+
+                                <span>Disney Assistant is thinking...</span>
+                            </div>
+                        </template>
+
+                    </div>
+
+                    <!-- MESSAGE INPUT -->
+                    <div class="composer">
+
+                        <lightning-textarea
+                            label="Ask Disney Assistant"
+                            placeholder="Type your question here..."
+                            value={message}
+                            onchange={handleMessageChange}
+                            disabled={isLoading}>
+                        </lightning-textarea>
+
+                        <div class="send-button">
+                            <lightning-button
+                                label="Send"
+                                variant="brand"
+                                icon-name="utility:send"
+                                onclick={handleSend}
+                                disabled={isSendDisabled}>
+                            </lightning-button>
+                        </div>
+
+                    </div>
+
+                    <div class="chat-footer">
+                        <span>Disney AI Multi-Agent Assistant</span>
+                        <span>Mock mode</span>
+                    </div>
 
                 </div>
+
             </lightning-tab>
 
+            <!-- TRACE TAB -->
             <lightning-tab label="Trace" value="trace">
 
                 <div class="panel">
+
+                    <h2>Execution Trace</h2>
 
                     <lightning-input
                         label="Trace ID"
@@ -46,14 +135,34 @@
 
                     <lightning-button
                         label="Load Trace"
-                        onclick={loadTrace}>
+                        variant="brand"
+                        onclick={loadTrace}
+                        disabled={isTraceLoading}>
                     </lightning-button>
 
                     <template if:true={trace}>
-                        <h3>Trace Details</h3>
 
-                        <p>Status: {trace.status}</p>
-                        <p>Latency: {trace.latency_ms} ms</p>
+                        <div class="answer">
+
+                            <h3>Trace Details</h3>
+
+                            <p>Status: {trace.status}</p>
+
+                            <p>
+                                Latency: {traceLatencySeconds} s
+                            </p>
+
+                            <p>
+                                Tool Calls: {trace.tool_calls}
+                            </p>
+
+                            <p>
+                                Session ID: {trace.session_id}
+                            </p>
+
+                        </div>
+
+                        <h3 class="section-heading">Execution Events</h3>
 
                         <template
                             for:each={trace.events}
@@ -62,50 +171,84 @@
                             <div key={event.event_id}
                                  class="event-card">
 
-                                <p>{event.event_type}</p>
+                                <p class="event-type">
+                                    {event.event_type}
+                                </p>
+
                                 <strong>{event.name}</strong>
-                                <p>{event.duration_ms} ms</p>
+
+                                <p>
+                                    Duration: {event.duration_ms} ms
+                                </p>
 
                             </div>
 
                         </template>
+
                     </template>
 
                 </div>
 
             </lightning-tab>
 
+            <!-- ROUTING TAB -->
             <lightning-tab label="Routing" value="routing">
 
                 <div class="panel">
 
-                    <h3>Executed Agents</h3>
+                    <h2>Executed Agents</h2>
 
-                    <template
-                        for:each={selectedAgents}
-                        for:item="agent">
+                    <p class="section-description">
+                        Agents observed during the latest execution.
+                    </p>
 
-                        <div key={agent} class="agent-card">
-                            <lightning-icon
-                                icon-name="utility:check"
-                                size="small">
-                            </lightning-icon>
-                            {agent}
+                    <template if:true={hasSelectedAgents}>
+
+                        <template
+                            for:each={selectedAgents}
+                            for:item="agent">
+
+                            <div key={agent} class="agent-card">
+
+                                <lightning-icon
+                                    icon-name="utility:check"
+                                    size="small"
+                                    alternative-text="Executed">
+                                </lightning-icon>
+
+                                <span>{agent}</span>
+
+                            </div>
+
+                        </template>
+
+                    </template>
+
+                    <template if:false={hasSelectedAgents}>
+                        <div class="empty-state">
+                            <p>
+                                No agent execution information available yet.
+                                Send a message to see routing details.
+                            </p>
                         </div>
-
                     </template>
 
                 </div>
 
             </lightning-tab>
 
+            <!-- METRICS TAB -->
             <lightning-tab label="Metrics" value="metrics">
 
                 <div class="panel">
 
+                    <h2>AI Performance Metrics</h2>
+
                     <lightning-button
                         label="Refresh Metrics"
-                        onclick={loadMetrics}>
+                        variant="brand"
+                        onclick={loadMetrics}
+                        disabled={isMetricsLoading}>
                     </lightning-button>
 
                     <template if:true={metrics}>
@@ -133,8 +276,13 @@
                             </div>
 
                             <div class="metric-card">
+                                <h2>{metrics.error_rate}%</h2>
+                                <p>Error Rate</p>
+                            </div>
+
+                            <div class="metric-card">
                                 <h2>{metrics.total_tool_calls}</h2>
-                                <p>Tool Calls</p>
+                                <p>Total Tool Calls</p>
                             </div>
 
                         </div>
